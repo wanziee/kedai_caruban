@@ -47,6 +47,57 @@
                 </div>
             </div>
 
+            <!-- Lokasi Kedai Caruban -->
+            <div class="mt-12">
+                <h3 class="text-2xl font-bold text-gray-800 mb-6">Lokasi Kedai Caruban</h3>
+                
+                <!-- Leaflet Map -->
+                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+                
+                <div id="map" class="rounded-lg overflow-hidden shadow-lg" style="height: 450px; width: 100%;"></div>
+                
+                <script>
+                    // Inisialisasi map
+                    const map = L.map('map').setView([-7.800851, 110.398633], 16);
+                    
+                    // Add tile layer
+                    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                        attribution: '© OpenStreetMap contributors',
+                        maxZoom: 19
+                    }).addTo(map);
+                    
+                    // Add marker dengan popup
+                    const marker = L.marker([-7.800851, 110.398633]).addTo(map);
+                    marker.bindPopup('<div class="text-center"><strong>📍 Kedai Caruban</strong><br><small>Kedai Caruban, Indonesia</small></div>').openPopup();
+                    
+                    // Custom marker icon
+                    const customIcon = L.icon({
+                        iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-2x-green.png',
+                        shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/0.7.7/images/marker-shadow.png',
+                        iconSize: [25, 41],
+                        iconAnchor: [12, 41],
+                        popupAnchor: [1, -34],
+                        shadowSize: [41, 41]
+                    });
+                    
+                    marker.setIcon(customIcon);
+                </script>
+                
+                <div class="mt-6 bg-green-50 p-6 rounded-lg">
+                    <p class="text-gray-700 mb-3">
+                        <span class="font-semibold text-gray-800">📍 Alamat:</span><br>
+                        Kedai Caruban, Indonesia
+                    </p>
+                    <p class="text-gray-600 mb-4">
+                        Klik link di bawah untuk navigasi langsung atau petunjuk arah:
+                    </p>
+                    <a href="https://maps.app.goo.gl/QHCCbRk5rHUdpKMN6" target="_blank" rel="noopener noreferrer" class="inline-block bg-primary text-white px-6 py-2 rounded-lg hover:bg-primary-light transition font-semibold">
+                        📍 Buka di Google Maps
+                    </a>
+                </div>
+            </div>
+
             <div class="mt-12 grid md:grid-cols-3 gap-6">
                 <div class="text-center p-6 bg-green-50 rounded-lg">
                     <div class="text-4xl font-bold text-primary mb-2">10+</div>
