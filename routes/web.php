@@ -11,6 +11,7 @@ use App\Http\Controllers\AuthController;
 Route::get('/', [FrontendController::class, 'home'])->name('home');
 Route::get('/company', [FrontendController::class, 'company'])->name('company');
 Route::get('/order', [FrontendController::class, 'order'])->name('order');
+Route::get('/search', [FrontendController::class, 'search'])->name('search');
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
 
 // Auth Routes

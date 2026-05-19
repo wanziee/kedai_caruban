@@ -24,4 +24,24 @@ class FrontendController extends Controller
     {
         return view('frontend.order');
     }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('q', '');
+        $menuItems = [];
+        $categories = MenuCategory::all();
+
+        if ($query) {
+            $menuItems = MenuItem::where('is_available', true)
+                ->where(function ($q) use ($query) {
+                    $q->where('name', 'like', "%{$query}%")
+                        ->orWhere('description', 'like', "%{$query}%");
+                })
+                ->with('category')
+                ->get();
+        }
+
+        return view('frontend.search', compact('query', 'menuItems', 'categories'));
+    }
 }
+

@@ -63,10 +63,10 @@
         </div>
     </nav>
     <!-- Mobile Navbar (Bottom) -->
-    <nav class="md:hidden fixed bottom-4 width-full inset-x-4 bg-primary text-white shadow-lg z-50 rounded-full">
-        <div class="flex justify-around items-center py-3">
+    <nav class="md:hidden fixed bottom-4 width-full inset-x-4 text-white h-20 z-50 flex gap-2 justify-around">
+        <div class="flex justify-around w-full h-full bg-primary items-center rounded-full shadow-lg p-2">
             <a href="<?php echo e(route('home')); ?>"
-                class="flex flex-col items-center space-y-1 px-4 py-2 rounded-lg <?php echo e(request()->routeIs('home') ? 'bg-primary-light' : ''); ?>">
+                class="flex flex-col items-center space-y-1 px-4 py-2 w-full h-full rounded-full  <?php echo e(request()->routeIs('home') ? 'bg-primary-light' : ''); ?>">
                 <svg fill="white" class="w-8 h-8" viewBox="0 0 24 24" id="home" data-name="Flat Line"
                     xmlns="http://www.w3.org/2000/svg" class="icon flat-line">
                     <path id="secondary"
@@ -82,7 +82,7 @@
                 <span class="text-xs <?php echo e(request()->routeIs('home') ? 'font-bold' : ''); ?>">Home</span>
             </a>
             <a href="<?php echo e(route('company')); ?>"
-                class="flex flex-col items-center space-y-1 px-4 py-2 rounded-lg <?php echo e(request()->routeIs('company') ? 'bg-primary-light' : ''); ?>">
+                class="flex flex-col items-center space-y-1 px-4 py-2 w-full h-full rounded-full  <?php echo e(request()->routeIs('company') ? 'bg-primary-light' : ''); ?>">
                 <svg class="w-8 h-8" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
 
                     <path fill="<?php echo e(request()->routeIs('company') ? 'white' : 'none'); ?>" stroke="white"
@@ -96,7 +96,7 @@
                 <span class="text-xs <?php echo e(request()->routeIs('company') ? 'font-bold' : ''); ?>">Company</span>
             </a>
             <a href="<?php echo e(route('order')); ?>"
-                class="flex flex-col items-center space-y-1 px-4 py-2 rounded-lg <?php echo e(request()->routeIs('order') ? 'bg-primary-light' : ''); ?>">
+                class="flex flex-col items-center space-y-1 px-4 py-2 w-full h-full rounded-full  <?php echo e(request()->routeIs('order') ? 'bg-primary-light' : ''); ?>">
                 <svg fill="#000000" class="w-8 h-8" viewBox="0 0 24 24" id="cart" data-name="Flat Line"
                     xmlns="http://www.w3.org/2000/svg" class="icon flat-line">
                     <polygon id="secondary" points="21 7 19 15 8 16 6.62 7 21 7"
@@ -111,7 +111,24 @@
                 <span class="text-xs <?php echo e(request()->routeIs('order') ? 'font-bold' : ''); ?>">Order</span>
             </a>
         </div>
+        <div
+            class="flex justify-around bg-primary w-20 h-20 items-center rounded-full shadow-lg p-2 <?php echo e(request()->routeIs('search') ? 'bg-primary-light' : 'bg-primary'); ?>">
+            <a href="<?php echo e(route('search')); ?>"
+                class="flex flex-col items-center space-y-1 px-4 py-2 w-full h-full rounded-full  ">
+                <svg fill="#000000"  viewBox="0 0 24 24" id="search"
+                    data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line h-8 w-8">
+                    <circle id="secondary" cx="10" cy="10" r="7"
+                        style="fill: <?php echo e(request()->routeIs('search') ? 'white' : 'var(--primary-color)'); ?>; stroke-width: 2;"></circle>
+                    <path id="primary" d="M21,21l-6-6M10,3a7,7,0,1,0,7,7A7,7,0,0,0,10,3Z"
+                        style="fill: none; stroke: white; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;">
+                    </path>
+                </svg>
+                <span class="text-xs <?php echo e(request()->routeIs('search') ? 'font-bold' : ''); ?>">Search</span>
+            </a>
+        </div>
     </nav>
+    <!-- Floating Search Button -->
+
 
     <main>
         <?php echo $__env->yieldContent('content'); ?>
