@@ -63,7 +63,7 @@
         </div>
     </nav>
     <!-- Mobile Navbar (Bottom) -->
-    <nav class="md:hidden fixed bottom-0 left-0 right-0 bg-primary text-white shadow-lg z-50">
+    <nav class="md:hidden fixed bottom-4 width-full inset-x-4 bg-primary text-white shadow-lg z-50 rounded-full">
         <div class="flex justify-around items-center py-3">
             <a href="{{ route('home') }}"
                 class="flex flex-col items-center space-y-1 px-4 py-2 rounded-lg {{ request()->routeIs('home') ? 'bg-primary-light' : '' }}">
@@ -97,8 +97,8 @@
             </a>
             <a href="{{ route('order') }}"
                 class="flex flex-col items-center space-y-1 px-4 py-2 rounded-lg {{ request()->routeIs('order') ? 'bg-primary-light' : '' }}">
-                <svg fill="#000000" class="w-8 h-8" viewBox="0 0 24 24" id="cart"
-                    data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line">
+                <svg fill="#000000" class="w-8 h-8" viewBox="0 0 24 24" id="cart" data-name="Flat Line"
+                    xmlns="http://www.w3.org/2000/svg" class="icon flat-line">
                     <polygon id="secondary" points="21 7 19 15 8 16 6.62 7 21 7"
                         style="fill: {{ request()->routeIs('order') ? 'white' : 'var(--primary-color)' }};"></polygon>
                     <path id="primary-upstroke" d="M11,20.5h.1m5.9,0h.1"
@@ -117,7 +117,7 @@
         @yield('content')
     </main>
 
-    <footer class="bg-primary-dark text-white py-6 mt-12">
+    <footer class="bg-primary-dark text-white py-6 mt-12 hidden md:block">
         <div class="max-w-7xl mx-auto px-4 text-center">
             <p>&copy; 2024 Kedai Caruban. All rights reserved.</p>
         </div>

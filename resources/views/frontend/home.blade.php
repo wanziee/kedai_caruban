@@ -24,6 +24,11 @@
                             title: 'Pesan Sekarang',
                             subtitle: 'Dapatkan pengalaman kuliner terbaik Anda',
                             gradient: 'from-primary to-[#2d7a2f]'
+                        },
+                        {
+                            title: 'Pesan Sekarang',
+                            subtitle: 'Dapatkan pengalaman kuliner terbaik Anda',
+                            gradient: 'from-primary to-[#2d7a2f]'
                         }
                     ],
                     nextSlide() {
@@ -59,56 +64,45 @@
         </script>
 
         <!-- Banner Carousel -->
-        <div x-init="setInterval(() => nextSlide(), 5000)" class="relative text-white overflow-hidden">
-            <template x-for="(banner, index) in banners" :key="index">
-                <div x-show="bannerSlide === index" :class="`bg-gradient-to-r ${banner.gradient}`"
-                    class="h-[300px] md:h-[500px] px-4 transition-opacity duration-1000 flex items-center">
-                    <div class="max-w-7xl mx-auto text-center">
-                        <h1 class="text-4xl md:text-5xl font-bold mb-4" x-text="banner.title"></h1>
-                        <p class="text-lg md:text-xl" x-text="banner.subtitle"></p>
+        <div class="relative text-white px-4 rounded-2xl overflow-hidden">
+            <div x-init="setInterval(() => nextSlide(), 5000)">
+                <template x-for="(banner, index) in banners" :key="index">
+                    <div x-show="bannerSlide === index" :class="`bg-gradient-to-r ${banner.gradient}`"
+                        class="h-[250px] md:h-[500px] px-4 transition-opacity duration-1000 flex items-center rounded-2xl">
+                        <div class="max-w-7xl mx-auto text-center">
+                            <h1 class="text-4xl md:text-5xl font-bold mb-4" x-text="banner.title"></h1>
+                            <p class="text-lg md:text-xl" x-text="banner.subtitle"></p>
+                        </div>
                     </div>
-                </div>
-            </template>
+                </template>
+            </div>
 
-            <!-- Banner Controls -->
-            <div class="absolute bottom-4 left-0 right-0 flex justify-center items-center gap-4 z-10">
-                <button type="button" @click="prevSlide()"
-                    class="bg-white/30 hover:bg-white/50 text-white p-2 rounded-full transition">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
-                    </svg>
-                </button>
+            <!-- Banner Indicators -->
 
-                <div class="flex gap-2">
-                    <template x-for="(banner, index) in banners" :key="index">
-                        <button type="button" @click="bannerSlide = index"
-                            :class="bannerSlide === index ? 'bg-white' : 'bg-white/50'"
-                            class="w-3 h-3 rounded-full transition hover:bg-white"></button>
-                    </template>
-                </div>
-
-                <button type="button" @click="nextSlide()"
-                    class="bg-white/30 hover:bg-white/50 text-white p-2 rounded-full transition">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
-                    </svg>
-                </button>
+            <div class="absolute top-0 left-0 right-0 flex gap-2 px-8 py-4 z-10">
+                <template x-for="(banner, index) in banners" :key="index">
+                    <div :class="bannerSlide === index ?
+                        'bg-white opacity-100' :
+                        'bg-white/40 opacity-70'"
+                        class="flex-1 min-h-[4px] rounded-full transition-all duration-500">
+                    </div>
+                </template>
             </div>
         </div>
 
-        <div class="max-w-7xl mx-auto px-4 py-8 ">
-            
+        <div class="max-w-7xl mx-auto px-4  ">
+
             <!-- Categories -->
 
-            <div class="max-w-7xl mx-auto py-6">
+            <div class="max-w-7xl mx-auto py-6 mb-4">
                 <h3 class="text-2xl font-bold mb-4">Kategori Produk</h3>
                 <div class="flex flex-wrap justify-between items-center  ">
 
                     <button type="button" @click="selectedCategory = 'all'"
                         class="flex flex-col items-center gap-2 focus:outline-none group w-24 md:w-24">
-                        <div :class="selectedCategory === 'all' ? 'border-4 border-green-600 scale-105 shadow-md' :
+                        <div :class="selectedCategory === 'all' ? 'scale-105 shadow-md' :
                             'border-2 border-transparent hover:scale-105'"
-                            class="w-20 h-20 md:w-20 md:h-20 rounded-full overflow-hidden bg-gray-50 p-2 flex items-center justify-center transition-all duration-200">
+                            class="  md:w-20 md:h-20 rounded-full overflow-hidden bg-gray-50 p-3 flex items-center justify-center transition-all duration-200">
                             <img src="{{ asset('images/category-all.png') }}" alt="Semua"
                                 class="w-full h-full md:w-20 md:h-20 object-cover">
                         </div>
@@ -122,11 +116,11 @@
 
                     @foreach ($categories as $category)
                         <button type="button" @click="selectedCategory = '{{ strtolower($category->name) }}'"
-                            class="flex flex-col items-center gap-2 focus:outline-none group w-20 md:w-24">
+                            class="flex flex-col items-center gap-2 focus:outline-none group w-24 md:w-24">
                             <div :class="selectedCategory === '{{ strtolower($category->name) }}' ?
-                                'border-4 border-green-600 scale-105 shadow-md' :
+                                ' scale-105 shadow-md' :
                                 'border-2 border-transparent hover:scale-105'"
-                                class="w-20 h-20 md:w-20 md:h-20 rounded-full overflow-hidden bg-gray-50 p-2 flex items-center justify-center transition-all duration-200">
+                                class="md:w-20 md:h-20 rounded-full overflow-hidden bg-gray-50 p-2 flex items-center justify-center transition-all duration-200">
                                 <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}"
                                     class="w-full h-full object-cover">
                             </div>
@@ -142,8 +136,14 @@
                 </div>
             </div>
 
+            <h3 class="text-2xl font-bold mb-4"
+                x-text="selectedCategory === 'all' 
+        ? 'Semua' 
+        : selectedCategory.charAt(0).toUpperCase() + selectedCategory.slice(1)">
+            </h3>
             <!-- Menu Items -->
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-4 gap-4">
+
                 @foreach ($menuItems as $item)
                     <div x-show="selectedCategory === 'all' || selectedCategory === '{{ strtolower($item->category->name) }}'"
                         class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition">
