@@ -12,10 +12,10 @@
                     <div class="flex gap-2">
                         <input type="text" name="q" value="{{ $query }}" 
                             placeholder="Cari nama menu atau deskripsi..." 
-                            class="flex-1 px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-primary transition">
-                        <button type="submit" class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary-light transition font-semibold">
+                            class="flex-1 px-4 py-3 border-2 border-gray-300 rounded-full focus:outline-none focus:border-primary transition">
+                        {{-- <button type="submit" class="bg-primary text-white px-6 py-3 rounded-lg hover:bg-primary-light transition font-semibold">
                             Cari
-                        </button>
+                        </button> --}}
                     </div>
                 </form>
             </div>
@@ -76,14 +76,14 @@
                     <p class="text-gray-400 text-sm mt-2">Ketik nama menu atau deskripsi yang ingin dicari</p>
                 </div>
             @endif
-
+{{-- 
             <!-- Go to Order Button -->
             <div class="mt-12 text-center pb-24">
                 <a href="{{ route('order') }}"
                     class="inline-block bg-primary text-white px-8 py-3 rounded-lg font-semibold hover:bg-primary-light transition">
                     Lihat Pesanan (<span x-text="cart.length"></span>)
                 </a>
-            </div>
+            </div> --}}
         </div>
     </div>
 
