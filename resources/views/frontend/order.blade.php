@@ -82,7 +82,12 @@
 
             <div x-show="cart.length > 0">
                 <template x-for="(item, index) in cart" :key="item.id">
-                    <div class="flex items-center justify-between py-4 border-b">
+                    <div class="flex items-center justify-between py-4 border-b gap-4">
+                        <!-- Product Image -->
+                        <div class="flex-shrink-0">
+                            <img :src="item.image" :alt="item.name" class="w-20 h-20 object-cover rounded-lg">
+                        </div>
+                        
                         <div class="flex-1">
                             <h3 class="font-semibold text-gray-800" x-text="item.name"></h3>
                             <p class="text-primary">Rp <span x-text="item.price.toLocaleString('id-ID')"></span></p>

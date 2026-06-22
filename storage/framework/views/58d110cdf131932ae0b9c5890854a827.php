@@ -118,7 +118,7 @@
                 <svg fill="#000000"  viewBox="0 0 24 24" id="search"
                     data-name="Flat Line" xmlns="http://www.w3.org/2000/svg" class="icon flat-line h-8 w-8">
                     <circle id="secondary" cx="10" cy="10" r="7"
-                        style="fill: <?php echo e(request()->routeIs('search') ? '' : 'var(--primary-color)'); ?>; stroke-width: 2;"></circle>
+                        style="fill: <?php echo e(request()->routeIs('search') ? 'gray' : 'var(--primary-color)'); ?>; stroke-width: 2;"></circle>
                     <path id="primary" d="M21,21l-6-6M10,3a7,7,0,1,0,7,7A7,7,0,0,0,10,3Z"
                         style="fill: none; stroke: white; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;">
                     </path>

@@ -10,26 +10,11 @@
                     selectedCategory: 'all',
                     cart: JSON.parse(localStorage.getItem('cart') || '[]'),
                     bannerSlide: 0,
-                    banners: [{
-                            title: 'Selamat Datang di Kedai Caruban',
-                            subtitle: 'Nikmati hidangan lezat kami dengan kualitas terbaik',
-                            gradient: 'from-primary to-primary-light'
-                        },
-                        {
-                            title: 'Cita Rasa Autentik',
-                            subtitle: 'Resep tradisional dengan sentuhan modern',
-                            gradient: 'from-primary-light to-primary'
-                        },
-                        {
-                            title: 'Pesan Sekarang',
-                            subtitle: 'Dapatkan pengalaman kuliner terbaik Anda',
-                            gradient: 'from-primary to-[#2d7a2f]'
-                        },
-                        {
-                            title: 'Pesan Sekarang',
-                            subtitle: 'Dapatkan pengalaman kuliner terbaik Anda',
-                            gradient: 'from-primary to-[#2d7a2f]'
-                        }
+                    banners: [
+                        { image: '/images/banners/banner1.jpg' },
+                        { image: '/images/banners/banner1.jpg' },
+                        { image: '/images/banners/banner1.jpg' },
+                        { image: '/images/banners/banner1.jpg' }
                     ],
                     nextSlide() {
                         this.bannerSlide = (this.bannerSlide + 1) % this.banners.length;
@@ -37,11 +22,12 @@
                     prevSlide() {
                         this.bannerSlide = (this.bannerSlide - 1 + this.banners.length) % this.banners.length;
                     },
-                    addToCart(id, name, price) {
+                    addToCart(id, name, price, image) {
                         console.log('Adding to cart:', {
                             id,
                             name,
-                            price
+                            price,
+                            image
                         });
                         const existingItem = this.cart.find(item => item.id === id);
                         if (existingItem) {
@@ -51,6 +37,7 @@
                                 id,
                                 name,
                                 price,
+                                image,
                                 qty: 1,
                                 notes: ''
                             });
@@ -67,11 +54,15 @@
         <div class="relative text-white mx-4 md:mx-0 md:mt-0 md:rounded-none mt-4 rounded-2xl overflow-hidden">
             <div x-init="setInterval(() => nextSlide(), 5000)">
                 <template x-for="(banner, index) in banners" :key="index">
-                    <div x-show="bannerSlide === index" :class="`bg-gradient-to-r ${banner.gradient}`"
-                        class="h-[250px] md:h-[500px] px-4 transition-opacity duration-1000 flex items-center md:rounded-none rounded-2xl">
-                        <div class="max-w-7xl mx-auto text-center">
-                            <h1 class="text-4xl md:text-5xl font-bold mb-4" x-text="banner.title"></h1>
-                            <p class="text-lg md:text-xl" x-text="banner.subtitle"></p>
+                    <div x-show="bannerSlide === index" class="h-[250px] md:h-[500px] transition-opacity duration-1000 flex items-center md:rounded-none rounded-2xl relative">
+                        <!-- Banner Image -->
+                        <img :src="banner.image" :alt="'Banner ' + (index + 1)" class="absolute inset-0 w-full h-full object-cover">
+                        <!-- Overlay - Solid Green for Banner 1, Gradient for others -->
+                        <div class="absolute inset-0 bg-green-900/50"></div>
+                        <!-- Text Content -->
+                        <div class="relative z-10 max-w-7xl mx-auto text-center px-4 text-white">
+                            <h1 class="text-3xl md:text-5xl font-bold mb-4">Selamat Datang di Kedai Caruban</h1>
+                            <p class="text-lg md:text-xl">Nikmati hidangan lezat kami dengan kualitas terbaik</p>
                         </div>
                     </div>
                 </template>
@@ -207,14 +198,14 @@
 
                                     <!-- Desktop -->
                                     <button type="button"
-                                        @click="addToCart({{ $item->id }}, '{{ $item->name }}', {{ $item->price }})"
+                                        @click="addToCart({{ $item->id }}, '{{ $item->name }}', {{ $item->price }}, '{{ asset('storage/' . $item->image) }}')"
                                         class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-light transition hidden md:block">
                                         + Add
                                     </button>
 
                                     <!-- Mobile -->
                                     <button type="button"
-                                        @click="addToCart({{ $item->id }}, '{{ $item->name }}', {{ $item->price }})"
+                                        @click="addToCart({{ $item->id }}, '{{ $item->name }}', {{ $item->price }}, '{{ asset('storage/' . $item->image) }}')"
                                         class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-light transition md:hidden">
                                         <svg width="15px" height="15px" viewBox="0 0 36 36"
                                             xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
