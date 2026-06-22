@@ -23,24 +23,32 @@
                     </div>
                     <div>
                         <p class="text-gray-500 text-sm">Status Pesanan</p>
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                            @if($order->order_status == 'pending') bg-yellow-100 text-yellow-800
-                            @elseif($order->order_status == 'paid') bg-green-100 text-green-800
-                            @elseif($order->order_status == 'cooking') bg-blue-100 text-blue-800
-                            @elseif($order->order_status == 'done') bg-green-100 text-green-800
-                            @elseif($order->order_status == 'cancelled') bg-red-100 text-red-800
-                            @endif">
+                        @php
+                            $statusClasses = [
+                                'pending' => 'bg-yellow-100 text-yellow-800',
+                                'paid' => 'bg-green-100 text-green-800',
+                                'cooking' => 'bg-blue-100 text-blue-800',
+                                'done' => 'bg-green-100 text-green-800',
+                                'cancelled' => 'bg-red-100 text-red-800',
+                            ];
+                            $classes = $statusClasses[$order->order_status] ?? 'bg-gray-100 text-gray-800';
+                        @endphp
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $classes }}">
                             {{ ucfirst($order->order_status) }}
                         </span>
                     </div>
                     <div>
                         <p class="text-gray-500 text-sm">Status Pembayaran</p>
-                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
-                            @if($order->payment_status == 'unpaid') bg-gray-100 text-gray-800
-                            @elseif($order->payment_status == 'paid') bg-green-100 text-green-800
-                            @elseif($order->payment_status == 'expired') bg-red-100 text-red-800
-                            @elseif($order->payment_status == 'failed') bg-red-100 text-red-800
-                            @endif">
+                        @php
+                            $paymentClasses = [
+                                'unpaid' => 'bg-gray-100 text-gray-800',
+                                'paid' => 'bg-green-100 text-green-800',
+                                'expired' => 'bg-red-100 text-red-800',
+                                'failed' => 'bg-red-100 text-red-800',
+                            ];
+                            $paymentClass = $paymentClasses[$order->payment_status] ?? 'bg-gray-100 text-gray-800';
+                        @endphp
+                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $paymentClass }}">
                             {{ ucfirst($order->payment_status) }}
                         </span>
                     </div>

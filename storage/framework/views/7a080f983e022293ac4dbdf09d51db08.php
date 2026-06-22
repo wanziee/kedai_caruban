@@ -16,18 +16,30 @@
                 <p class="text-green-200 text-sm mt-1">Kedai Caruban</p>
             </div>
             <nav class="mt-6 flex-1 overflow-hidden">
-                <a href="<?php echo e(route('admin.dashboard')); ?>" class="block px-6 py-3 hover:bg-primary-light transition <?php echo e(request()->routeIs('admin.dashboard') ? 'bg-primary-light' : ''); ?>">
-                    📊 Dashboard
-                </a>
-                <a href="<?php echo e(route('admin.categories')); ?>" class="block px-6 py-3 hover:bg-primary-light transition <?php echo e(request()->routeIs('admin.categories*') ? 'bg-primary-light' : ''); ?>">
-                    📁 Kategori
-                </a>
-                <a href="<?php echo e(route('admin.menu.index')); ?>" class="block px-6 py-3 hover:bg-primary-light transition <?php echo e(request()->routeIs('admin.menu*') ? 'bg-primary-light' : ''); ?>">
-                    🍽️ Menu
-                </a>
-                <a href="<?php echo e(route('admin.orders.index')); ?>" class="block px-6 py-3 hover:bg-primary-light transition <?php echo e(request()->routeIs('admin.orders*') ? 'bg-primary-light' : ''); ?>">
-                    📦 Pesanan
-                </a>
+                <?php if(auth()->user()->role === 'admin'): ?>
+                    <a href="<?php echo e(route('admin.dashboard')); ?>" class="block px-6 py-3 hover:bg-primary-light transition <?php echo e(request()->routeIs('admin.dashboard') ? 'bg-primary-light' : ''); ?>">
+                        📊 Dashboard
+                    </a>
+                    <a href="<?php echo e(route('admin.categories')); ?>" class="block px-6 py-3 hover:bg-primary-light transition <?php echo e(request()->routeIs('admin.categories*') ? 'bg-primary-light' : ''); ?>">
+                        📁 Kategori
+                    </a>
+                    <a href="<?php echo e(route('admin.menu.index')); ?>" class="block px-6 py-3 hover:bg-primary-light transition <?php echo e(request()->routeIs('admin.menu*') ? 'bg-primary-light' : ''); ?>">
+                        🍽️ Menu
+                    </a>
+                <?php elseif(auth()->user()->role === 'cashier'): ?>
+                    <a href="<?php echo e(route('admin.dashboard')); ?>" class="block px-6 py-3 hover:bg-primary-light transition <?php echo e(request()->routeIs('admin.dashboard') ? 'bg-primary-light' : ''); ?>">
+                        📊 Dashboard
+                    </a>
+                    <a href="<?php echo e(route('admin.orders.index')); ?>" class="block px-6 py-3 hover:bg-primary-light transition <?php echo e(request()->routeIs('admin.orders*') ? 'bg-primary-light' : ''); ?>">
+                        📦 Pesanan
+                    </a>
+                    <a href="<?php echo e(route('admin.menu.index')); ?>" class="block px-6 py-3 hover:bg-primary-light transition <?php echo e(request()->routeIs('admin.menu*') ? 'bg-primary-light' : ''); ?>">
+                        🍽️ Menu
+                    </a>
+                    <a href="<?php echo e(route('admin.reports.sales')); ?>" class="block px-6 py-3 hover:bg-primary-light transition <?php echo e(request()->routeIs('admin.reports*') ? 'bg-primary-light' : ''); ?>">
+                        📈 Laporan Penjualan
+                    </a>
+                <?php endif; ?>
                 <hr class="my-4 border-primary-light">
                 <a href="<?php echo e(route('home')); ?>" class="block px-6 py-3 hover:bg-primary-light transition">
                     👁️ Lihat Website

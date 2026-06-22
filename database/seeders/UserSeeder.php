@@ -13,14 +13,6 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Create Owner
-        User::create([
-            'name' => 'Owner Kedai Caruban',
-            'email' => 'owner@kedaicabruban.com',
-            'password' => Hash::make('password123'),
-            'role' => 'owner',
-        ]);
-
         // Create Admin
         User::create([
             'name' => 'Admin Kedai Caruban',
@@ -33,6 +25,14 @@ class UserSeeder extends Seeder
         User::create([
             'name' => 'Cashier Kedai Caruban',
             'email' => 'cashier@kedaicabruban.com',
+            'password' => Hash::make('password123'),
+            'role' => 'cashier',
+        ]);
+
+        // Create additional Cashier for testing
+        User::create([
+            'name' => 'Cashier 2',
+            'email' => 'cashier2@kedaicabruban.com',
             'password' => Hash::make('password123'),
             'role' => 'cashier',
         ]);

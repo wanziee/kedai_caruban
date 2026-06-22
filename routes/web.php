@@ -3,9 +3,11 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CashierController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ReportController;
 
 // Frontend Routes
 Route::get('/', [FrontendController::class, 'home'])->name('home');
@@ -19,8 +21,8 @@ Route::get('/admin/login', [AuthController::class, 'showLogin'])->name('auth.log
 Route::post('/admin/login', [AuthController::class, 'login'])->name('auth.login.post');
 Route::post('/admin/logout', [AuthController::class, 'logout'])->name('auth.logout');
 
-// Admin Routes (Protected)
-Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])->prefix('admin')->name('admin.')->group(function () {
+// Admin Routes (Protected - Admin and Cashier)
+Route::middleware(['auth', \App\Http\Middleware\IsAdminOrCashier::class])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'index'])->name('dashboard');
     
     // Categories
@@ -42,4 +44,8 @@ Route::middleware(['auth', \App\Http\Middleware\IsAdmin::class])->prefix('admin'
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [OrderController::class, 'show'])->name('orders.show');
     Route::put('/orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+    
+    // Reports
+    Route::get('/reports/sales', [ReportController::class, 'sales'])->name('reports.sales');
+    Route::get('/reports/sales/print', [ReportController::class, 'salesPrint'])->name('reports.sales.print');
 });

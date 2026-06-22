@@ -77,12 +77,16 @@
                                 <p class="text-sm text-gray-500">Meja <?php echo e($order->table_number); ?></p>
                             </div>
                             <div class="text-right">
-                                <span class="px-3 py-1 rounded-full text-xs font-semibold 
-                                    <?php if($order->order_status == 'pending'): ?> bg-yellow-100 text-yellow-800
-                                    <?php elseif($order->order_status == 'cooking'): ?> bg-blue-100 text-blue-800
-                                    <?php elseif($order->order_status == 'done'): ?> bg-green-100 text-green-800
-                                    <?php elseif($order->order_status == 'cancelled'): ?> bg-red-100 text-red-800
-                                    <?php else: ?> bg-gray-100 text-gray-800 <?php endif; ?>">
+                                <?php
+                                    $statusClasses = [
+                                        'pending' => 'bg-yellow-100 text-yellow-800',
+                                        'cooking' => 'bg-blue-100 text-blue-800',
+                                        'done' => 'bg-green-100 text-green-800',
+                                        'cancelled' => 'bg-red-100 text-red-800',
+                                    ];
+                                    $classes = $statusClasses[$order->order_status] ?? 'bg-gray-100 text-gray-800';
+                                ?>
+                                <span class="px-3 py-1 rounded-full text-xs font-semibold <?php echo e($classes); ?>">
                                     <?php echo e(ucfirst($order->order_status)); ?>
 
                                 </span>

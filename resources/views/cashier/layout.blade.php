@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Kedai Caruban</title>
+    <title>Cashier - Kedai Caruban</title>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
@@ -12,34 +12,22 @@
         <!-- Sidebar -->
         <div class="w-64 bg-primary text-white sticky top-0 h-screen flex flex-col">
             <div class="p-6 border-b border-primary-light">
-                <h1 class="text-2xl font-bold">Admin Panel</h1>
+                <h1 class="text-2xl font-bold">Cashier</h1>
                 <p class="text-green-200 text-sm mt-1">Kedai Caruban</p>
             </div>
             <nav class="mt-6 flex-1 overflow-hidden">
-                @if(auth()->user()->role === 'admin')
-                    <a href="{{ route('admin.dashboard') }}" class="block px-6 py-3 hover:bg-primary-light transition {{ request()->routeIs('admin.dashboard') ? 'bg-primary-light' : '' }}">
-                        📊 Dashboard
-                    </a>
-                    <a href="{{ route('admin.categories') }}" class="block px-6 py-3 hover:bg-primary-light transition {{ request()->routeIs('admin.categories*') ? 'bg-primary-light' : '' }}">
-                        📁 Kategori
-                    </a>
-                    <a href="{{ route('admin.menu.index') }}" class="block px-6 py-3 hover:bg-primary-light transition {{ request()->routeIs('admin.menu*') ? 'bg-primary-light' : '' }}">
-                        🍽️ Menu
-                    </a>
-                @elseif(auth()->user()->role === 'cashier')
-                    <a href="{{ route('admin.dashboard') }}" class="block px-6 py-3 hover:bg-primary-light transition {{ request()->routeIs('admin.dashboard') ? 'bg-primary-light' : '' }}">
-                        📊 Dashboard
-                    </a>
-                    <a href="{{ route('admin.orders.index') }}" class="block px-6 py-3 hover:bg-primary-light transition {{ request()->routeIs('admin.orders*') ? 'bg-primary-light' : '' }}">
-                        📦 Pesanan
-                    </a>
-                    <a href="{{ route('admin.menu.index') }}" class="block px-6 py-3 hover:bg-primary-light transition {{ request()->routeIs('admin.menu*') ? 'bg-primary-light' : '' }}">
-                        🍽️ Menu
-                    </a>
-                    <a href="{{ route('admin.reports.sales') }}" class="block px-6 py-3 hover:bg-primary-light transition {{ request()->routeIs('admin.reports*') ? 'bg-primary-light' : '' }}">
-                        📈 Laporan Penjualan
-                    </a>
-                @endif
+                <a href="{{ route('cashier.dashboard') }}" class="block px-6 py-3 hover:bg-primary-light transition {{ request()->routeIs('cashier.dashboard') ? 'bg-primary-light' : '' }}">
+                    📊 Beranda
+                </a>
+                <a href="{{ route('cashier.orders') }}" class="block px-6 py-3 hover:bg-primary-light transition {{ request()->routeIs('cashier.orders*') ? 'bg-primary-light' : '' }}">
+                    📦 Pesanan
+                </a>
+                <a href="{{ route('cashier.menu.index') }}" class="block px-6 py-3 hover:bg-primary-light transition {{ request()->routeIs('cashier.menu*') ? 'bg-primary-light' : '' }}">
+                    🍽️ Menu
+                </a>
+                <a href="{{ route('cashier.reports.sales') }}" class="block px-6 py-3 hover:bg-primary-light transition {{ request()->routeIs('cashier.reports*') ? 'bg-primary-light' : '' }}">
+                    📈 Laporan Penjualan
+                </a>
                 <hr class="my-4 border-primary-light">
                 <a href="{{ route('home') }}" class="block px-6 py-3 hover:bg-primary-light transition">
                     👁️ Lihat Website

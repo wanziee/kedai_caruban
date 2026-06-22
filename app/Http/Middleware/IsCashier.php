@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
-class IsAdmin
+class IsCashier
 {
     /**
      * Handle an incoming request.
@@ -22,8 +22,8 @@ class IsAdmin
 
         $user = Auth::user();
         
-        // Hanya admin yang bisa akses
-        if ($user->role !== 'admin') {
+        // Hanya cashier yang bisa akses
+        if ($user->role !== 'cashier') {
             return redirect()->route('home')->with('error', 'Unauthorized access');
         }
 
