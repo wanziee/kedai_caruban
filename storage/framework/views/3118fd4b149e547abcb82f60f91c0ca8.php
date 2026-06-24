@@ -14,34 +14,60 @@
                         { image: '/images/banners/banner1.jpg' },
                         { image: '/images/banners/banner1.jpg' }
                     ],
+                    showModal: false,
+                    selectedMenuItem: null,
+                    quantity: 1,
+                    notes: '',
                     nextSlide() {
                         this.bannerSlide = (this.bannerSlide + 1) % this.banners.length;
                     },
                     prevSlide() {
                         this.bannerSlide = (this.bannerSlide - 1 + this.banners.length) % this.banners.length;
                     },
-                    addToCart(id, name, price, image) {
-                        console.log('Adding to cart:', {
-                            id,
-                            name,
-                            price,
-                            image
-                        });
+                    openModal(id, name, price, image) {
+                        this.selectedMenuItem = { id, name, price, image };
+                        this.quantity = 1;
+                        this.notes = '';
+                        this.showModal = true;
+                    },
+                    closeModal() {
+                        this.showModal = false;
+                        this.selectedMenuItem = null;
+                        this.quantity = 1;
+                        this.notes = '';
+                    },
+                    increaseQuantity() {
+                        this.quantity++;
+                    },
+                    decreaseQuantity() {
+                        if (this.quantity > 1) {
+                            this.quantity--;
+                        }
+                    },
+                    confirmAddToCart() {
+                        if (!this.selectedMenuItem) return;
+                        
+                        const { id, name, price, image } = this.selectedMenuItem;
                         const existingItem = this.cart.find(item => item.id === id);
+                        
                         if (existingItem) {
-                            existingItem.qty++;
+                            existingItem.qty += this.quantity;
+                            if (this.notes) {
+                                existingItem.notes = this.notes;
+                            }
                         } else {
                             this.cart.push({
                                 id,
                                 name,
                                 price,
                                 image,
-                                qty: 1,
-                                notes: ''
+                                qty: this.quantity,
+                                notes: this.notes
                             });
                         }
+                        
                         localStorage.setItem('cart', JSON.stringify(this.cart));
-                        console.log('Cart after add:', this.cart);
+                        this.closeModal();
                         alert('Item added to cart!');
                     }
                 }
@@ -201,14 +227,14 @@
 
                                     <!-- Desktop -->
                                     <button type="button"
-                                        @click="addToCart(<?php echo e($item->id); ?>, '<?php echo e($item->name); ?>', <?php echo e($item->price); ?>, '<?php echo e(asset('storage/' . $item->image)); ?>')"
+                                        @click="openModal(<?php echo e($item->id); ?>, '<?php echo e($item->name); ?>', <?php echo e($item->price); ?>, '<?php echo e(asset('storage/' . $item->image)); ?>')"
                                         class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-light transition hidden md:block">
                                         + Add
                                     </button>
 
                                     <!-- Mobile -->
                                     <button type="button"
-                                        @click="addToCart(<?php echo e($item->id); ?>, '<?php echo e($item->name); ?>', <?php echo e($item->price); ?>, '<?php echo e(asset('storage/' . $item->image)); ?>')"
+                                        @click="openModal(<?php echo e($item->id); ?>, '<?php echo e($item->name); ?>', <?php echo e($item->price); ?>, '<?php echo e(asset('storage/' . $item->image)); ?>')"
                                         class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-light transition md:hidden">
                                         <svg width="15px" height="15px" viewBox="0 0 36 36"
                                             xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -231,6 +257,60 @@
                 <!-- Go to Order Button -->
                 
             </div>
+
+        <!-- Modal Popup -->
+        <div x-show="showModal" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0" class="fixed inset-0 z-50 flex items-center justify-center p-4" style="display: none;">
+            <!-- Backdrop -->
+            <div x-show="showModal" @click="closeModal()" class="absolute inset-0 bg-black/50"></div>
+            
+            <!-- Modal Content -->
+            <div x-show="showModal" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" class="relative bg-white rounded-2xl shadow-2xl max-w-md w-full p-6">
+                <!-- Close Button -->
+                <button @click="closeModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                    </svg>
+                </button>
+
+                <!-- Menu Item Info -->
+                <div class="flex items-center gap-4 mb-6">
+                    <img :src="selectedMenuItem?.image" :alt="selectedMenuItem?.name" class="w-20 h-20 object-cover rounded-lg">
+                    <div>
+                        <h3 class="text-lg font-bold text-gray-800" x-text="selectedMenuItem?.name"></h3>
+                        <p class="text-primary font-semibold">Rp <span x-text="selectedMenuItem?.price?.toLocaleString('id-ID')"></span></p>
+                    </div>
+                </div>
+
+                <!-- Quantity Controls -->
+                <div class="mb-4">
+                    <label class="block text-gray-700 font-medium mb-2">Jumlah</label>
+                    <div class="flex items-center gap-4">
+                        <button @click="decreaseQuantity()" class="w-10 h-10 bg-gray-200 rounded-full hover:bg-gray-300 flex items-center justify-center font-bold text-lg">-</button>
+                        <span class="text-xl font-bold w-12 text-center" x-text="quantity"></span>
+                        <button @click="increaseQuantity()" class="w-10 h-10 bg-gray-200 rounded-full hover:bg-gray-300 flex items-center justify-center font-bold text-lg">+</button>
+                    </div>
+                </div>
+
+                <!-- Message/Notes Field -->
+                <div class="mb-6">
+                    <label class="block text-gray-700 font-medium mb-2">Pesan (Opsional)</label>
+                    <textarea x-model="notes" rows="3" placeholder="Contoh: Pedas, tanpa bawang, dll." class="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent resize-none"></textarea>
+                </div>
+
+                <!-- Total Price -->
+                <div class="mb-6 p-4 bg-gray-50 rounded-lg">
+                    <div class="flex justify-between items-center">
+                        <span class="text-gray-600">Total:</span>
+                        <span class="text-xl font-bold text-primary">Rp <span x-text="(selectedMenuItem?.price * quantity)?.toLocaleString('id-ID')"></span></span>
+                    </div>
+                </div>
+
+                <!-- Confirm Button -->
+                <button @click="confirmAddToCart()" class="w-full bg-primary text-white py-3 rounded-lg font-semibold hover:bg-primary-light transition">
+                    Tambah ke Keranjang
+                </button>
+            </div>
+        </div>
         <?php $__env->stopSection(); ?>
 
 <?php echo $__env->make('frontend.layout', array_diff_key(get_defined_vars(), ['__data' => 1, '__path' => 1]))->render(); ?><?php /**PATH /Applications/MAMP/htdocs/kedai-caruban/resources/views/frontend/home.blade.php ENDPATH**/ ?>

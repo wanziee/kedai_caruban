@@ -74,6 +74,7 @@ class OrderController extends Controller
 
         return response()->json([
             'success' => true,
+            'order_id' => $order->id,
             'order_code' => $orderCode,
             'total_price' => $totalPrice,
         ]);

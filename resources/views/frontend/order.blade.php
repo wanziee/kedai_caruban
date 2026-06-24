@@ -49,8 +49,8 @@
                             this.cart = [];
                             localStorage.removeItem('cart');
                             setTimeout(() => {
-                                window.location.href = '{{ route('home') }}';
-                            }, 3000);
+                                window.location.href = '/payment/qris/' + data.order_id;
+                            }, 1000);
                         } else {
                             alert('Gagal membuat pesanan: ' + (data.message || 'Unknown error'));
                         }

@@ -8,6 +8,7 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ReportController;
+use App\Http\Controllers\PaymentController;
 
 // Frontend Routes
 Route::get('/', [FrontendController::class, 'home'])->name('home');
@@ -15,6 +16,12 @@ Route::get('/company', [FrontendController::class, 'company'])->name('company');
 Route::get('/order', [FrontendController::class, 'order'])->name('order');
 Route::get('/search', [FrontendController::class, 'search'])->name('search');
 Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+
+// Payment Routes
+Route::get('/payment/qris/{orderId}', [PaymentController::class, 'createQRIS'])->name('payment.qris');
+Route::post('/payment/notification', [PaymentController::class, 'handleNotification'])->name('payment.notification')->withoutMiddleware(['App\Http\Middleware\VerifyCsrfToken']);
+Route::get('/payment/status/{orderId}', [PaymentController::class, 'checkStatus'])->name('payment.status');
+Route::get('/payment/receipt/{orderId}', [PaymentController::class, 'showReceipt'])->name('payment.receipt');
 
 // Auth Routes
 Route::get('/admin/login', [AuthController::class, 'showLogin'])->name('auth.login');
