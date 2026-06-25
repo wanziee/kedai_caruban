@@ -249,7 +249,7 @@
                         <th>Tanggal</th>
                         <th>Total Item</th>
                         <th class="text-right">Total Harga</th>
-                        <th>Status</th>
+                        <th>Status Pembayaran</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -259,7 +259,7 @@
                             <td>{{ $order->created_at->format('d/m/Y H:i') }}</td>
                             <td>{{ $order->orderItems->count() }} item</td>
                             <td class="text-right">Rp {{ number_format($order->total_price, 0, ',', '.') }}</td>
-                            <td>{{ ucfirst($order->order_status) }}</td>
+                            <td>{{ ucfirst($order->payment_status) }}</td>
                         </tr>
                     @endforeach
                 </tbody>

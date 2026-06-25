@@ -1,7 +1,7 @@
 @extends('frontend.layout')
 
 @section('content')
-<div x-data="initOrder()" x-init="$watch('cart', value => localStorage.setItem('cart', JSON.stringify(value)))" class="min-h-screen">
+<div x-data="initOrder()" x-init="$watch('cart', value => { localStorage.setItem('cart', JSON.stringify(value)); window.dispatchEvent(new Event('cart-updated')); })" class="min-h-screen">
 
     <script>
         function initOrder() {

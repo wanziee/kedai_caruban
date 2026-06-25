@@ -2,6 +2,14 @@
 
 @section('content')
     <div x-data="initCart()" class="min-h-screen">
+        <!-- Success Notification -->
+        <div x-show="showNotification" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform -translate-y-4" x-transition:enter-end="opacity-100 transform translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform translate-y-0" x-transition:leave-end="opacity-0 transform -translate-y-4" class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2" style="display: none;">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span x-text="notificationMessage" class="font-semibold"></span>
+        </div>
+
         <div class="max-w-7xl mx-auto px-4 py-8">
             <!-- Search Header -->
             <div class="mb-8">
@@ -76,14 +84,7 @@
                     <p class="text-gray-400 text-sm mt-2">Ketik nama menu atau deskripsi yang ingin dicari</p>
                 </div>
             @endif
-{{-- 
-            <!-- Go to Order Button -->
-            <div class="mt-12 text-center pb-24">
-                <a href="{{ route('order') }}"
-                    class="inline-block bg-primary text-white px-8 py-3 rounded-lg font-semibold hover:bg-primary-light transition">
-                    Lihat Pesanan (<span x-text="cart.length"></span>)
-                </a>
-            </div> --}}
+
         </div>
     </div>
 
@@ -91,6 +92,15 @@
         function initCart() {
             return {
                 cart: JSON.parse(localStorage.getItem('cart') || '[]'),
+                showNotification: false,
+                notificationMessage: '',
+                showSuccessNotification(message) {
+                    this.notificationMessage = message;
+                    this.showNotification = true;
+                    setTimeout(() => {
+                        this.showNotification = false;
+                    }, 2000);
+                },
                 addToCart(id, name, price) {
                     console.log('Adding to cart:', {
                         id,
@@ -110,8 +120,9 @@
                         });
                     }
                     localStorage.setItem('cart', JSON.stringify(this.cart));
+                    window.dispatchEvent(new Event('cart-updated'));
+                    this.showSuccessNotification('Berhasil ditambahkan ke keranjang!');
                     console.log('Cart after add:', this.cart);
-                    alert('Item added to cart!');
                 }
             }
         }

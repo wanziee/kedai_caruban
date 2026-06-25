@@ -24,8 +24,7 @@
                         <?php
                             $statusClasses = [
                                 'pending' => 'bg-yellow-100 text-yellow-800',
-                                'paid' => 'bg-green-100 text-green-800',
-                                'cooking' => 'bg-blue-100 text-blue-800',
+                                'diproses' => 'bg-blue-100 text-blue-800',
                                 'done' => 'bg-green-100 text-green-800',
                                 'cancelled' => 'bg-red-100 text-red-800',
                             ];
@@ -91,8 +90,7 @@
                     <div class="flex gap-4">
                         <select name="order_status" required class="flex-1 px-4 py-2 border rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent">
                             <option value="pending" <?php echo e($order->order_status == 'pending' ? 'selected' : ''); ?>>Pending</option>
-                            <option value="paid" <?php echo e($order->order_status == 'paid' ? 'selected' : ''); ?>>Paid</option>
-                            <option value="cooking" <?php echo e($order->order_status == 'cooking' ? 'selected' : ''); ?>>Cooking</option>
+                            <option value="diproses" <?php echo e($order->order_status == 'diproses' ? 'selected' : ''); ?>>Diproses</option>
                             <option value="done" <?php echo e($order->order_status == 'done' ? 'selected' : ''); ?>>Done</option>
                             <option value="cancelled" <?php echo e($order->order_status == 'cancelled' ? 'selected' : ''); ?>>Cancelled</option>
                         </select>

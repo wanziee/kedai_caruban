@@ -7,6 +7,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\MenuItem;
 use Illuminate\Support\Str;
+use Carbon\Carbon;
 
 class OrderController extends Controller
 {
@@ -25,7 +26,7 @@ class OrderController extends Controller
     public function updateStatus(Request $request, Order $order)
     {
         $validated = $request->validate([
-            'order_status' => 'required|in:pending,paid,cooking,done,cancelled',
+            'order_status' => 'required|in:pending,diproses,done,cancelled',
         ]);
 
         $order->update($validated);
@@ -43,7 +44,12 @@ class OrderController extends Controller
             'items.*.notes' => 'nullable|string',
         ]);
 
-        $orderCode = 'ORD-' . strtoupper(Str::random(8));
+        // Generate order code: ORD-YYYYMMDD-NNNN
+        $today = Carbon::now()->format('Ymd');
+        $orderCountToday = Order::whereDate('created_at', Carbon::today())->count();
+        $sequenceNumber = str_pad($orderCountToday + 1, 4, '0', STR_PAD_LEFT);
+        $orderCode = 'ORD-' . $today . '-' . $sequenceNumber;
+        
         $totalPrice = 0;
 
         $order = Order::create([

@@ -6,12 +6,16 @@
     <title>Pembayaran QRIS - Kedai Caruban</title>
     <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
     <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="<?php echo e(env('MIDTRANS_CLIENT_KEY')); ?>"></script>
+    <script>
+        console.log('Midtrans Client Key:', '<?php echo e(env('MIDTRANS_CLIENT_KEY')); ?>');
+        console.log('Snap.js loaded:', typeof snap !== 'undefined');
+    </script>
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
     <div class="bg-white rounded-xl shadow-lg max-w-md w-full p-6">
         <div class="text-center mb-6">
             <h1 class="text-2xl font-bold text-gray-800 mb-2">Pembayaran QRIS</h1>
-            <p class="text-gray-600">Order #<?php echo e($order->id); ?></p>
+            <p class="text-gray-600"><?php echo e($order->order_code); ?></p>
         </div>
 
         <div class="bg-gray-50 rounded-lg p-4 mb-6">
@@ -23,12 +27,29 @@
                 <span class="text-gray-600">Status Order</span>
                 <span class="px-3 py-1 rounded-full text-sm font-semibold 
                     <?php if($order->order_status === 'pending'): ?> bg-yellow-100 text-yellow-800
-                    <?php elseif($order->order_status === 'paid'): ?> bg-green-100 text-green-800
+                    <?php elseif($order->order_status === 'diproses'): ?> bg-blue-100 text-blue-800
+                    <?php elseif($order->order_status === 'done'): ?> bg-green-100 text-green-800
                     <?php elseif($order->order_status === 'cancelled'): ?> bg-red-100 text-red-800
                     <?php else: ?> bg-gray-100 text-gray-800 <?php endif; ?>">
                     <?php echo e(ucfirst($order->order_status)); ?>
 
                 </span>
+            </div>
+        </div>
+
+        <!-- Order Details -->
+        <div class="bg-gray-50 rounded-lg p-4 mb-6">
+            <h3 class="font-semibold text-gray-800 mb-3">Detail Pesanan</h3>
+            <div class="space-y-3">
+                <?php $__currentLoopData = $order->orderItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <p class="font-medium text-gray-800"><?php echo e($item->menuItem->name); ?></p>
+                            <p class="text-sm text-gray-500"><?php echo e($item->qty); ?> x Rp <?php echo e(number_format($item->price, 0, ',', '.')); ?></p>
+                        </div>
+                        <p class="font-semibold text-gray-800">Rp <?php echo e(number_format($item->subtotal, 0, ',', '.')); ?></p>
+                    </div>
+                <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
             </div>
         </div>
 
@@ -44,7 +65,7 @@
             <div id="payment-status" class="hidden bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
                 <p class="text-blue-800 text-sm">Menunggu pembayaran...</p>
             </div>
-        <?php elseif($order->order_status === 'paid'): ?>
+        <?php elseif($order->order_status === 'diproses'): ?>
             <div class="bg-green-50 border border-green-200 rounded-lg p-4 mb-4">
                 <p class="text-green-800 font-semibold text-center">Pembayaran Berhasil!</p>
             </div>
@@ -66,9 +87,19 @@
                 const paymentStatus = document.getElementById('payment-status');
 
                 payButton.addEventListener('click', function() {
+                    if (typeof snap === 'undefined') {
+                        console.error('Snap.js is not loaded');
+                        paymentStatus.innerHTML = '<p class="text-red-800">Error: Payment gateway tidak tersedia. Silakan refresh halaman.</p>';
+                        payButton.disabled = false;
+                        payButton.textContent = 'Coba Lagi';
+                        return;
+                    }
+
                     payButton.disabled = true;
                     payButton.textContent = 'Memproses...';
                     paymentStatus.classList.remove('hidden');
+
+                    console.log('Snap token:', '<?php echo e($snapToken); ?>');
 
                     snap.pay('<?php echo e($snapToken); ?>', {
                         onSuccess: function(result) {
@@ -102,7 +133,7 @@
                         .then(response => response.json())
                         .then(data => {
                             console.log('Payment status check:', data);
-                            if (data.order_status === 'paid' || data.payment_status === 'success') {
+                            if (data.order_status === 'diproses' || data.payment_status === 'paid') {
                                 console.log('Payment successful, redirecting to receipt');
                                 window.location.href = '/payment/receipt/<?php echo e($order->id); ?>';
                             }

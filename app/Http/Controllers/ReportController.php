@@ -20,7 +20,7 @@ class ReportController extends Controller
         // Get sales data for the month - include all completed orders (not pending, not cancelled)
         $orders = Order::whereYear('created_at', $year)
             ->whereMonth('created_at', $month)
-            ->whereNotIn('order_status', ['pending', 'cancelled'])
+            ->where('payment_status', 'paid')
             ->with('orderItems.menuItem')
             ->orderBy('created_at', 'desc')
             ->get();
@@ -37,7 +37,7 @@ class ReportController extends Controller
             ->join('orders', 'order_items.order_id', '=', 'orders.id')
             ->whereYear('orders.created_at', $year)
             ->whereMonth('orders.created_at', $month)
-            ->whereNotIn('orders.order_status', ['pending', 'cancelled'])
+            ->where('orders.payment_status', 'paid')
             ->groupBy('menu_items.category_id', 'menu_categories.name')
             ->get();
 
@@ -48,7 +48,7 @@ class ReportController extends Controller
             ->join('orders', 'order_items.order_id', '=', 'orders.id')
             ->whereYear('orders.created_at', $year)
             ->whereMonth('orders.created_at', $month)
-            ->whereNotIn('orders.order_status', ['pending', 'cancelled'])
+            ->where('orders.payment_status', 'paid')
             ->groupBy('menu_items.id', 'menu_items.name')
             ->orderBy('total_quantity', 'desc')
             ->limit(10)
@@ -74,7 +74,7 @@ class ReportController extends Controller
         // Get sales data for the month - include all completed orders (not pending, not cancelled)
         $orders = Order::whereYear('created_at', $year)
             ->whereMonth('created_at', $month)
-            ->whereNotIn('order_status', ['pending', 'cancelled'])
+            ->where('payment_status', 'paid')
             ->with('orderItems.menuItem')
             ->orderBy('created_at', 'desc')
             ->get();
@@ -91,7 +91,7 @@ class ReportController extends Controller
             ->join('orders', 'order_items.order_id', '=', 'orders.id')
             ->whereYear('orders.created_at', $year)
             ->whereMonth('orders.created_at', $month)
-            ->whereNotIn('orders.order_status', ['pending', 'cancelled'])
+            ->where('orders.payment_status', 'paid')
             ->groupBy('menu_items.category_id', 'menu_categories.name')
             ->get();
 
@@ -102,7 +102,7 @@ class ReportController extends Controller
             ->join('orders', 'order_items.order_id', '=', 'orders.id')
             ->whereYear('orders.created_at', $year)
             ->whereMonth('orders.created_at', $month)
-            ->whereNotIn('orders.order_status', ['pending', 'cancelled'])
+            ->where('orders.payment_status', 'paid')
             ->groupBy('menu_items.id', 'menu_items.name')
             ->orderBy('total_quantity', 'desc')
             ->limit(10)

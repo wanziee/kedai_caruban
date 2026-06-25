@@ -28,8 +28,12 @@ class PaymentController extends Controller
     {
         try {
             $order = Order::with('orderItems.menuItem')->findOrFail($orderId);
-            
-            Log::info('QRIS page accessed', ['order_id' => $orderId, 'order_status' => $order->order_status]);
+
+            Log::info('QRIS page accessed', [
+                'order_id' => $orderId,
+                'order_status' => $order->order_status,
+                'payment_status' => $order->payment_status
+            ]);
 
             // Validasi order
             if ($order->order_status !== 'pending') {
@@ -41,6 +45,8 @@ class PaymentController extends Controller
 
             // Jika belum ada payment token, buat baru
             if (!$snapToken) {
+                Log::info('Creating new snap token', ['order_id' => $order->id]);
+
                 // Detail transaksi
                 $transactionDetails = [
                     'order_id' => $order->id,
@@ -80,8 +86,12 @@ class PaymentController extends Controller
                     ],
                 ];
 
+                Log::info('Midtrans params', ['params' => $params]);
+
                 $snapToken = Snap::getSnapToken($params);
-                
+
+                Log::info('Snap token generated', ['snap_token' => $snapToken]);
+
                 // Simpan snap token dan midtrans order id ke order
                 $order->payment_token = $snapToken;
                 $order->midtrans_order_id = $order->id; // Store the same order_id for Midtrans
@@ -89,7 +99,7 @@ class PaymentController extends Controller
 
                 Log::info('QRIS created', ['order_id' => $order->id, 'midtrans_order_id' => $order->midtrans_order_id]);
             } else {
-                Log::info('Using existing payment token', ['order_id' => $order->id]);
+                Log::info('Using existing payment token', ['order_id' => $order->id, 'token_length' => strlen($snapToken)]);
             }
 
             return view('payment.qris', compact('order', 'snapToken'));
@@ -102,7 +112,7 @@ class PaymentController extends Controller
     /**
      * Show receipt after successful payment
      */
-    public function showReceipt($orderId)
+    public function showReceipt(int $orderId)
     {
         try {
             $order = Order::with('orderItems.menuItem')->findOrFail($orderId);
@@ -115,27 +125,54 @@ class PaymentController extends Controller
             
             // Update order status if payment was successful but not yet updated in database
             // This handles cases where webhook hasn't been called yet
-            if ($order->payment_status !== 'paid' && $order->order_status !== 'paid') {
+            if ($order->payment_status !== 'paid' && $order->order_status !== 'diproses') {
+                Log::info('Checking payment status from Midtrans API', ['order_id' => $order->id]);
+
                 // Try to check status from Midtrans
                 try {
                     $status = \Midtrans\Transaction::status($order->id);
-                    if (isset($status->transaction_status) && ($status->transaction_status === 'settlement' || $status->transaction_status === 'capture')) {
-                        $order->order_status = 'paid';
-                        $order->payment_status = 'paid'; // Use 'paid' instead of 'success' to match enum
-                        $order->midtrans_transaction_id = $status->transaction_id ?? null;
+                    Log::info('Midtrans API response', ['status' => $status]);
+
+                    $transactionStatus = is_array($status) ? ($status['transaction_status'] ?? null) : ($status->transaction_status ?? null);
+                    $transactionId = is_array($status) ? ($status['transaction_id'] ?? null) : ($status->transaction_id ?? null);
+
+                    Log::info('Parsed transaction status', [
+                        'transaction_status' => $transactionStatus,
+                        'transaction_id' => $transactionId
+                    ]);
+
+                    if ($transactionStatus === 'settlement' || $transactionStatus === 'capture') {
+                        $order->order_status = 'diproses';
+                        $order->payment_status = 'paid';
+                        $order->midtrans_transaction_id = $transactionId;
+
+                        Log::info('Updating order in database', [
+                            'order_id' => $order->id,
+                            'new_order_status' => $order->order_status,
+                            'new_payment_status' => $order->payment_status
+                        ]);
+
                         $order->save();
-                        
+
                         Log::info('Order status updated from Midtrans API', [
                             'order_id' => $order->id,
-                            'transaction_status' => $status->transaction_status
+                            'transaction_status' => $transactionStatus
+                        ]);
+                    } else {
+                        Log::info('Payment not settled yet', [
+                            'order_id' => $order->id,
+                            'transaction_status' => $transactionStatus
                         ]);
                     }
                 } catch (\Exception $e) {
-                    Log::error('Failed to check Midtrans status: ' . $e->getMessage());
+                    Log::error('Failed to check Midtrans status: ' . $e->getMessage(), [
+                        'error' => $e->getMessage(),
+                        'trace' => $e->getTraceAsString()
+                    ]);
                 }
                 
                 // Still not paid after checking Midtrans
-                if ($order->payment_status !== 'paid' && $order->order_status !== 'paid') {
+                if ($order->payment_status !== 'paid' && $order->order_status !== 'diproses') {
                     return redirect()->route('payment.qris', $orderId)->with('error', 'Pembayaran belum berhasil. Silakan tunggu beberapa detik atau coba lagi.');
                 }
             }
@@ -190,12 +227,12 @@ class PaymentController extends Controller
 
             if ($transactionStatus == 'capture') {
                 if ($fraudStatus == 'accept') {
-                    $order->order_status = 'paid';
-                    $order->payment_status = 'paid'; // Use 'paid' instead of 'success' to match enum
+                    $order->order_status = 'diproses';
+                    $order->payment_status = 'paid';
                 }
             } else if ($transactionStatus == 'settlement') {
-                $order->order_status = 'paid';
-                $order->payment_status = 'paid'; // Use 'paid' instead of 'success' to match enum
+                $order->order_status = 'diproses';
+                $order->payment_status = 'paid';
             } else if ($transactionStatus == 'cancel') {
                 if ($fraudStatus == 'challenge') {
                     $order->order_status = 'cancelled';
@@ -248,12 +285,12 @@ class PaymentController extends Controller
 
             if ($transactionStatus == 'capture') {
                 if ($fraudStatus == 'accept') {
-                    $order->order_status = 'paid';
-                    $order->payment_status = 'paid'; // Use 'paid' instead of 'success' to match enum
+                    $order->order_status = 'diproses';
+                    $order->payment_status = 'paid';
                 }
             } else if ($transactionStatus == 'settlement') {
-                $order->order_status = 'paid';
-                $order->payment_status = 'paid'; // Use 'paid' instead of 'success' to match enum
+                $order->order_status = 'diproses';
+                $order->payment_status = 'paid';
             } else if ($transactionStatus == 'cancel') {
                 if ($fraudStatus == 'challenge') {
                     $order->order_status = 'cancelled';

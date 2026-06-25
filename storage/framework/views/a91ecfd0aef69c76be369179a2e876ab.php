@@ -113,7 +113,7 @@
                         <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Tanggal</th>
                         <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Total Item</th>
                         <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Total Harga</th>
-                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Status</th>
+                        <th class="px-6 py-3 text-left text-sm font-semibold text-gray-700">Status Pembayaran</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -125,15 +125,16 @@
                             <td class="px-6 py-4 text-sm text-gray-800 font-semibold">Rp <?php echo e(number_format($order->total_price, 0, ',', '.')); ?></td>
                             <td class="px-6 py-4 text-sm">
                                 <?php
-                                    $statusClasses = [
+                                    $paymentClasses = [
                                         'paid' => 'bg-green-100 text-green-800',
-                                        'cooking' => 'bg-blue-100 text-blue-800',
-                                        'done' => 'bg-green-100 text-green-800',
+                                        'unpaid' => 'bg-gray-100 text-gray-800',
+                                        'expired' => 'bg-red-100 text-red-800',
+                                        'failed' => 'bg-red-100 text-red-800',
                                     ];
-                                    $classes = $statusClasses[$order->order_status] ?? 'bg-yellow-100 text-yellow-800';
+                                    $classes = $paymentClasses[$order->payment_status] ?? 'bg-gray-100 text-gray-800';
                                 ?>
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <?php echo e($classes); ?>">
-                                    <?php echo e(ucfirst($order->order_status)); ?>
+                                    <?php echo e(ucfirst($order->payment_status)); ?>
 
                                 </span>
                             </td>

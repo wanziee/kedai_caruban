@@ -20,6 +20,8 @@
                     selectedMenuItem: null,
                     quantity: 1,
                     notes: '',
+                    showNotification: false,
+                    notificationMessage: '',
                     nextSlide() {
                         this.bannerSlide = (this.bannerSlide + 1) % this.banners.length;
                     },
@@ -46,6 +48,13 @@
                             this.quantity--;
                         }
                     },
+                    showSuccessNotification(message) {
+                        this.notificationMessage = message;
+                        this.showNotification = true;
+                        setTimeout(() => {
+                            this.showNotification = false;
+                        }, 2000);
+                    },
                     confirmAddToCart() {
                         if (!this.selectedMenuItem) return;
                         
@@ -69,12 +78,21 @@
                         }
                         
                         localStorage.setItem('cart', JSON.stringify(this.cart));
+                        window.dispatchEvent(new Event('cart-updated'));
                         this.closeModal();
-                        alert('Item added to cart!');
+                        this.showSuccessNotification('Berhasil ditambahkan ke keranjang!');
                     }
                 }
             }
         </script>
+
+        <!-- Success Notification -->
+        <div x-show="showNotification" x-transition:enter="transition ease-out duration-300" x-transition:enter-start="opacity-0 transform -translate-y-4" x-transition:enter-end="opacity-100 transform translate-y-0" x-transition:leave="transition ease-in duration-200" x-transition:leave-start="opacity-100 transform translate-y-0" x-transition:leave-end="opacity-0 transform -translate-y-4" class="fixed top-4 left-1/2 transform -translate-x-1/2 z-50 bg-green-500 text-white px-6 py-3 rounded-lg shadow-lg flex items-center gap-2" style="display: none;">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
+            </svg>
+            <span x-text="notificationMessage" class="font-semibold"></span>
+        </div>
 
         <!-- Banner Carousel -->
         <div class="relative text-white mx-4 md:mx-0 md:mt-0 md:rounded-none mt-4 rounded-2xl overflow-hidden">
@@ -216,33 +234,34 @@
                                     {{ $item->description }}
                                 </p>
 
-                                <div class="flex justify-between items-center mt-4">
-
-                                    <span class="text-xl font-bold text-primary">
-                                        Rp {{ number_format($item->price, 0, ',', '.') }}
-                                    </span>
-
-                                    <!-- Desktop -->
+                                <!-- Desktop -->
+                                <div class="mt-auto pt-4 hidden md:block">
                                     <button type="button"
                                         @click="openModal({{ $item->id }}, '{{ $item->name }}', {{ $item->price }}, '{{ asset('storage/' . $item->image) }}')"
-                                        class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-light transition hidden md:block">
-                                        + Add
+                                        class="w-full bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-light transition">
+                                        + Add - Rp {{ number_format($item->price, 0, ',', '.') }}
                                     </button>
+                                </div>
 
-                                    <!-- Mobile -->
-                                    <button type="button"
-                                        @click="openModal({{ $item->id }}, '{{ $item->name }}', {{ $item->price }}, '{{ asset('storage/' . $item->image) }}')"
-                                        class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-light transition md:hidden">
-                                        <svg width="15px" height="15px" viewBox="0 0 36 36"
-                                            xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                            aria-hidden="true" role="img" class="iconify iconify--twemoji"
-                                            preserveAspectRatio="xMidYMid meet">
-                                            <path fill="white"
-                                                d="M31 15H21V5a3 3 0 1 0-6 0v10H5a3 3 0 1 0 0 6h10v10a3 3 0 1 0 6 0V21h10a3 3 0 1 0 0-6z">
-                                            </path>
-                                        </svg>
-                                    </button>
-
+                                <!-- Mobile -->
+                                <div class="mt-auto pt-4 md:hidden">
+                                    <div class="flex justify-between items-center">
+                                        <span class="text-lg font-bold text-primary">
+                                            Rp {{ number_format($item->price, 0, ',', '.') }}
+                                        </span>
+                                        <button type="button"
+                                            @click="openModal({{ $item->id }}, '{{ $item->name }}', {{ $item->price }}, '{{ asset('storage/' . $item->image) }}')"
+                                            class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-light transition">
+                                            <svg width="15px" height="15px" viewBox="0 0 36 36"
+                                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                aria-hidden="true" role="img" class="iconify iconify--twemoji"
+                                                preserveAspectRatio="xMidYMid meet">
+                                                <path fill="white"
+                                                    d="M31 15H21V5a3 3 0 1 0-6 0v10H5a3 3 0 1 0 0 6h10v10a3 3 0 1 0 6 0V21h10a3 3 0 1 0 0-6z">
+                                                </path>
+                                            </svg>
+                                        </button>
+                                    </div>
                                 </div>
 
                             </div>

@@ -31,7 +31,7 @@
         }
     </style>
 </head>
-
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 <body class="bg-gray-100">
     <!-- Desktop Navbar -->
     <nav class="hidden md:block bg-primary text-white shadow-lg sticky top-0 z-40">
@@ -63,7 +63,7 @@
         </div>
     </nav>
     <!-- Mobile Navbar (Bottom) -->
-    <nav class="md:hidden fixed bottom-1 width-full inset-x-4 text-white h-20 z-50 flex gap-2 justify-around">
+    <nav class="md:hidden fixed bottom-1 width-full inset-x-4 text-white h-20 z-50 mb-2 flex gap-2 justify-around" x-data="{ cartCount: 0 }" x-init="cartCount = JSON.parse(localStorage.getItem('cart') || '[]').reduce((sum, item) => sum + item.qty, 0); window.addEventListener('cart-updated', () => { cartCount = JSON.parse(localStorage.getItem('cart') || '[]').reduce((sum, item) => sum + item.qty, 0); });">
         <div class="flex justify-around w-full h-full bg-primary items-center rounded-full shadow-lg p-2">
             <a href="<?php echo e(route('home')); ?>"
                 class="flex flex-col items-center space-y-1 px-4 py-2 w-full h-full rounded-full  <?php echo e(request()->routeIs('home') ? 'bg-primary-light' : ''); ?>">
@@ -96,7 +96,7 @@
                 <span class="text-xs <?php echo e(request()->routeIs('company') ? 'font-bold' : ''); ?>">Company</span>
             </a>
             <a href="<?php echo e(route('order')); ?>"
-                class="flex flex-col items-center space-y-1 px-4 py-2 w-full h-full rounded-full  <?php echo e(request()->routeIs('order') ? 'bg-primary-light' : ''); ?>">
+                class="flex flex-col items-center space-y-1 px-4 py-2 w-full h-full rounded-full  <?php echo e(request()->routeIs('order') ? 'bg-primary-light' : ''); ?> relative">
                 <svg fill="#000000" class="w-8 h-8" viewBox="0 0 24 24" id="cart" data-name="Flat Line"
                     xmlns="http://www.w3.org/2000/svg" class="icon flat-line">
                     <polygon id="secondary" points="21 7 19 15 8 16 6.62 7 21 7"
@@ -108,6 +108,7 @@
                         style="fill: none; stroke: white; stroke-linecap: round; stroke-linejoin: round; stroke-width: 2;">
                     </path>
                 </svg>
+                <span x-show="cartCount > 0" x-text="cartCount > 99 ? '99+' : cartCount" class="absolute -top-1 right-[25px] bg-red-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center"></span>
                 <span class="text-xs <?php echo e(request()->routeIs('order') ? 'font-bold' : ''); ?>">Order</span>
             </a>
         </div>

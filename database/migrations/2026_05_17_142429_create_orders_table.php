@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('order_code')->unique();
             $table->string('customer_name')->nullable();
             $table->decimal('total_price', 10, 2)->default(0);
-            $table->enum('order_status', ['pending', 'paid', 'cooking', 'done', 'cancelled'])->default('pending');
+            $table->enum('order_status', ['pending', 'diproses', 'done', 'cancelled'])->default('pending');
             $table->enum('payment_status', ['unpaid', 'paid', 'expired', 'failed'])->default('unpaid');
             $table->string('midtrans_order_id')->nullable();
             $table->string('midtrans_transaction_id')->nullable();
