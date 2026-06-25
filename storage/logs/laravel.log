@@ -10039,3 +10039,39 @@ Did you mean one of these?
 [2026-06-25 15:31:35] local.INFO: Snap token generated {"snap_token":"bb352e6e-d774-4ac5-9af4-216d799a86f7"} 
 [2026-06-25 15:31:35] local.INFO: QRIS created {"order_id":39,"midtrans_order_id":39} 
 [2026-06-25 15:31:56] local.INFO: Receipt page accessed {"order_id":39,"order_status":"diproses","payment_status":"paid"} 
+[2026-06-25 15:34:54] local.INFO: QRIS page accessed {"order_id":40,"order_status":"pending","payment_status":"unpaid"} 
+[2026-06-25 15:34:54] local.INFO: Creating new snap token {"order_id":40} 
+[2026-06-25 15:34:54] local.INFO: Midtrans params {"params":{"transaction_details":{"order_id":40,"gross_amount":"20000.00"},"item_details":[{"id":2,"price":"20000.00","quantity":1,"name":"Mie Ayam Bakso"}],"customer_details":{"first_name":"iwchan","email":"customer@example.com","phone":"-"},"expiry":{"unit":"minutes","duration":30}}} 
+[2026-06-25 15:34:54] local.INFO: Snap token generated {"snap_token":"40257e17-34a9-40f0-bdea-c2818043e0d5"} 
+[2026-06-25 15:34:54] local.INFO: QRIS created {"order_id":40,"midtrans_order_id":40} 
+[2026-06-25 15:35:15] local.INFO: Receipt page accessed {"order_id":40,"order_status":"diproses","payment_status":"paid"} 
+[2026-06-25 15:41:42] local.INFO: QRIS page accessed {"order_id":41,"order_status":"pending","payment_status":"unpaid"} 
+[2026-06-25 15:41:42] local.INFO: Creating new snap token {"order_id":41} 
+[2026-06-25 15:41:42] local.INFO: Midtrans params {"params":{"transaction_details":{"order_id":41,"gross_amount":"20000.00"},"item_details":[{"id":2,"price":"20000.00","quantity":1,"name":"Mie Ayam Bakso"}],"customer_details":{"first_name":"ichwan","email":"customer@example.com","phone":"-"},"expiry":{"unit":"minutes","duration":30}}} 
+[2026-06-25 15:41:43] local.INFO: Snap token generated {"snap_token":"6fa5b910-0f92-4efb-8243-8016d164a7b6"} 
+[2026-06-25 15:41:43] local.INFO: QRIS created {"order_id":41,"midtrans_order_id":41} 
+[2026-06-25 15:42:18] local.INFO: Receipt page accessed {"order_id":41,"order_status":"diproses","payment_status":"paid"} 
+[2026-06-25 15:44:24] local.INFO: Receipt page accessed {"order_id":41,"order_status":"diproses","payment_status":"paid"} 
+[2026-06-25 15:44:24] local.INFO: Receipt page accessed {"order_id":41,"order_status":"diproses","payment_status":"paid"} 
+[2026-06-25 15:44:25] local.INFO: Receipt page accessed {"order_id":41,"order_status":"diproses","payment_status":"paid"} 
+[2026-06-25 15:44:32] local.INFO: Receipt page accessed {"order_id":41,"order_status":"diproses","payment_status":"paid"} 
+[2026-06-25 15:44:32] local.INFO: Receipt page accessed {"order_id":41,"order_status":"diproses","payment_status":"paid"} 
+[2026-06-25 15:44:33] local.INFO: Receipt page accessed {"order_id":41,"order_status":"diproses","payment_status":"paid"} 
+[2026-06-25 15:44:39] local.INFO: Receipt page accessed {"order_id":41,"order_status":"diproses","payment_status":"paid"} 
+[2026-06-25 15:44:39] local.INFO: Receipt page accessed {"order_id":41,"order_status":"diproses","payment_status":"paid"} 
+[2026-06-25 15:44:40] local.INFO: Receipt page accessed {"order_id":41,"order_status":"diproses","payment_status":"paid"} 
+[2026-06-25 15:45:46] local.INFO: Receipt page accessed {"order_id":41,"order_status":"diproses","payment_status":"paid"} 
+[2026-06-25 15:45:46] local.INFO: Receipt page accessed {"order_id":41,"order_status":"diproses","payment_status":"paid"} 
+[2026-06-25 15:45:47] local.INFO: Receipt page accessed {"order_id":41,"order_status":"diproses","payment_status":"paid"} 
+[2026-06-25 15:45:52] local.INFO: Receipt page accessed {"order_id":41,"order_status":"diproses","payment_status":"paid"} 
+[2026-06-25 15:45:52] local.INFO: Receipt page accessed {"order_id":41,"order_status":"diproses","payment_status":"paid"} 
+[2026-06-25 15:45:53] local.INFO: Receipt page accessed {"order_id":41,"order_status":"diproses","payment_status":"paid"} 
+[2026-06-25 15:47:10] local.INFO: Receipt page accessed {"order_id":41,"order_status":"done","payment_status":"paid"} 
+[2026-06-25 15:47:10] local.INFO: Receipt page accessed {"order_id":41,"order_status":"done","payment_status":"paid"} 
+[2026-06-25 15:47:11] local.INFO: Receipt page accessed {"order_id":41,"order_status":"done","payment_status":"paid"} 
+[2026-06-25 15:47:30] local.INFO: Receipt page accessed {"order_id":41,"order_status":"done","payment_status":"paid"} 
+[2026-06-25 15:47:30] local.INFO: Receipt page accessed {"order_id":41,"order_status":"done","payment_status":"paid"} 
+[2026-06-25 15:47:31] local.INFO: Receipt page accessed {"order_id":41,"order_status":"done","payment_status":"paid"} 
+[2026-06-25 15:47:50] local.INFO: Receipt page accessed {"order_id":41,"order_status":"done","payment_status":"paid"} 
+[2026-06-25 15:47:50] local.INFO: Receipt page accessed {"order_id":41,"order_status":"done","payment_status":"paid"} 
+[2026-06-25 15:47:51] local.INFO: Receipt page accessed {"order_id":41,"order_status":"done","payment_status":"paid"} 

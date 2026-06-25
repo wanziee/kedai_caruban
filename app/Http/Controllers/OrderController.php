@@ -13,7 +13,11 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::with('orderItems.menuItem')->orderBy('created_at', 'desc')->get();
+        // Only show orders that have been successfully paid
+        $orders = Order::with('orderItems.menuItem')
+            ->where('payment_status', 'paid')
+            ->orderBy('created_at', 'desc')
+            ->get();
         return view('admin.orders.index', compact('orders'));
     }
 
@@ -30,6 +34,15 @@ class OrderController extends Controller
         ]);
 
         $order->update($validated);
+
+        // Return JSON for AJAX requests
+        if ($request->expectsJson()) {
+            return response()->json([
+                'success' => true,
+                'message' => 'Order status updated successfully.'
+            ]);
+        }
+
         return redirect()->route('admin.orders.show', $order)->with('success', 'Order status updated successfully.');
     }
 

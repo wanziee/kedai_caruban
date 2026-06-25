@@ -241,15 +241,30 @@ class PaymentController extends Controller
                     $order->order_status = 'cancelled';
                     $order->payment_status = 'failed';
                 }
+                // Delete order if payment failed/cancelled
+                $order->orderItems()->delete();
+                $order->delete();
+                Log::info('Order deleted due to payment cancellation', ['order_id' => $order->id]);
+                return response('OK', 200);
             } else if ($transactionStatus == 'deny') {
                 $order->order_status = 'cancelled';
                 $order->payment_status = 'failed';
+                // Delete order if payment denied
+                $order->orderItems()->delete();
+                $order->delete();
+                Log::info('Order deleted due to payment denial', ['order_id' => $order->id]);
+                return response('OK', 200);
             } else if ($transactionStatus == 'expire') {
                 $order->order_status = 'cancelled';
                 $order->payment_status = 'expired';
+                // Delete order if payment expired
+                $order->orderItems()->delete();
+                $order->delete();
+                Log::info('Order deleted due to payment expiration', ['order_id' => $order->id]);
+                return response('OK', 200);
             } else if ($transactionStatus == 'pending') {
                 $order->order_status = 'pending';
-                $order->payment_status = 'unpaid'; // Use 'unpaid' instead of 'pending' to match enum
+                $order->payment_status = 'unpaid';
             }
 
             $order->save();
@@ -299,15 +314,24 @@ class PaymentController extends Controller
                     $order->order_status = 'cancelled';
                     $order->payment_status = 'failed';
                 }
+                // Delete order if payment failed/cancelled
+                $order->orderItems()->delete();
+                $order->delete();
             } else if ($transactionStatus == 'deny') {
                 $order->order_status = 'cancelled';
                 $order->payment_status = 'failed';
+                // Delete order if payment denied
+                $order->orderItems()->delete();
+                $order->delete();
             } else if ($transactionStatus == 'expire') {
                 $order->order_status = 'cancelled';
                 $order->payment_status = 'expired';
+                // Delete order if payment expired
+                $order->orderItems()->delete();
+                $order->delete();
             } else if ($transactionStatus == 'pending') {
                 $order->order_status = 'pending';
-                $order->payment_status = 'unpaid'; // Use 'unpaid' instead of 'pending' to match enum
+                $order->payment_status = 'unpaid';
             }
 
             $order->save();
