@@ -4,12 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pembayaran QRIS - Kedai Caruban</title>
-    <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
     <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="<?php echo e(env('MIDTRANS_CLIENT_KEY')); ?>"></script>
-    <script>
-        console.log('Midtrans Client Key:', '<?php echo e(env('MIDTRANS_CLIENT_KEY')); ?>');
-        console.log('Snap.js loaded:', typeof snap !== 'undefined');
-    </script>
+    <?php echo app('Illuminate\Foundation\Vite')(['resources/css/app.css', 'resources/js/app.js']); ?>
 </head>
 <body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
     <div class="bg-white rounded-xl shadow-lg max-w-md w-full p-6">

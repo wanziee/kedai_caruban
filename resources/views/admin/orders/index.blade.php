@@ -11,6 +11,7 @@
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kode Pesanan</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Meja</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pelanggan</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Item</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pembayaran</th>
@@ -24,6 +25,11 @@
                         <td class="px-6 py-4 whitespace-nowrap font-medium text-gray-900">{{ $order->order_code }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-gray-900">{{ $order->table_number }}</td>
                         <td class="px-6 py-4 whitespace-nowrap text-gray-900">{{ $order->customer_name ?? '-' }}</td>
+                        <td class="px-6 py-4 text-gray-900">
+                            @foreach($order->orderItems as $item)
+                                <div>{{ $item->menuItem->name ?? 'N/A' }} x{{ $item->qty }}</div>
+                            @endforeach
+                        </td>
                         <td class="px-6 py-4 whitespace-nowrap text-gray-900">Rp {{ number_format($order->total_price, 0, ',', '.') }}</td>
                         <td class="px-6 py-4 whitespace-nowrap">
                             <select onchange="updateOrderStatus({{ $order->id }}, this.value)"
@@ -105,7 +111,18 @@
 
         const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
 
-        fetch(`/admin/orders/${currentOrderId}/status`, {
+        console.log('Updating order status:', {
+            orderId: currentOrderId,
+            newStatus: currentNewStatus,
+            csrfToken: csrfToken
+        });
+
+        // Use window.location to get the full URL including port
+        const url = window.location.origin + `/admin/orders/${currentOrderId}/status`;
+        console.log('Request URL:', url);
+        console.log('Window location:', window.location.origin);
+
+        fetch(url, {
             method: 'PUT',
             headers: {
                 'Content-Type': 'application/json',
@@ -115,8 +132,15 @@
                 order_status: currentNewStatus
             })
         })
-        .then(response => response.json())
+        .then(response => {
+            console.log('Response status:', response.status);
+            if (!response.ok) {
+                throw new Error('HTTP error! status: ' + response.status);
+            }
+            return response.json();
+        })
         .then(data => {
+            console.log('Response data:', data);
             if (data.success) {
                 location.reload();
             } else {
@@ -124,7 +148,11 @@
                 location.reload();
             }
         })
-   
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Terjadi kesalahan: ' + error.message);
+            location.reload();
+        });
     }
 </script>
 @endsection

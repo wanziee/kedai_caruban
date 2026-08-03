@@ -58,12 +58,17 @@
                     <div class="space-y-4">
                         <?php $__currentLoopData = $order->orderItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                             <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-                                <div class="flex-1">
-                                    <p class="font-semibold text-gray-800"><?php echo e($item->menuItem->name); ?></p>
-                                    <p class="text-sm text-gray-500">Rp <?php echo e(number_format($item->price, 0, ',', '.')); ?> x <?php echo e($item->qty); ?></p>
-                                    <?php if($item->notes): ?>
-                                        <p class="text-sm text-gray-600 mt-1">Catatan: <?php echo e($item->notes); ?></p>
+                                <div class="flex items-center gap-4 flex-1">
+                                    <?php if($item->menuItem->image): ?>
+                                        <img src="<?php echo e(asset('storage/' . $item->menuItem->image)); ?>" alt="<?php echo e($item->menuItem->name); ?>" class="w-16 h-16 object-cover rounded-lg">
                                     <?php endif; ?>
+                                    <div>
+                                        <p class="font-semibold text-gray-800"><?php echo e($item->menuItem->name); ?></p>
+                                        <p class="text-sm text-gray-500">Rp <?php echo e(number_format($item->price, 0, ',', '.')); ?> x <?php echo e($item->qty); ?></p>
+                                        <?php if($item->notes): ?>
+                                            <p class="text-sm text-gray-600 mt-1">Catatan: <?php echo e($item->notes); ?></p>
+                                        <?php endif; ?>
+                                    </div>
                                 </div>
                                 <div class="text-right">
                                     <p class="font-bold text-gray-800">Rp <?php echo e(number_format($item->subtotal, 0, ',', '.')); ?></p>

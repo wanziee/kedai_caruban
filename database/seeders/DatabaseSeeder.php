@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             MenuCategorySeeder::class,
             MenuItemSeeder::class,
+            OrderSeeder::class,
         ]);
     }
 }

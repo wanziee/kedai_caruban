@@ -55,4 +55,5 @@ Route::middleware(['auth', \App\Http\Middleware\IsAdminOrCashier::class])->prefi
     // Reports
     Route::get('/reports/sales', [ReportController::class, 'sales'])->name('reports.sales');
     Route::get('/reports/sales/print', [ReportController::class, 'salesPrint'])->name('reports.sales.print');
+    Route::get('/reports/sales/export', [ReportController::class, 'salesExport'])->name('reports.sales.export');
 });

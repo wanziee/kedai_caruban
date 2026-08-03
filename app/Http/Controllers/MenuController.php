@@ -53,8 +53,10 @@ class MenuController extends Controller
             'description' => 'nullable|string',
             'price' => 'required|numeric|min:0',
             'image' => 'nullable|image|max:2048',
-            'is_available' => 'boolean',
         ]);
+
+        // Handle is_available checkbox
+        $validated['is_available'] = $request->boolean('is_available');
 
         if ($request->hasFile('image')) {
             $validated['image'] = $request->file('image')->store('menu-images', 'public');

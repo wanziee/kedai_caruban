@@ -28,9 +28,13 @@
         <button type="submit" class="px-6 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition font-semibold">
             Tampilkan
         </button>
-        
+
         <a href="{{ route('admin.reports.sales.print', ['month' => $month, 'year' => $year]) }}" target="_blank" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-semibold">
             🖨️ Cetak
+        </a>
+
+        <a href="{{ route('admin.reports.sales.export', ['month' => $month, 'year' => $year]) }}" class="px-6 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition font-semibold">
+            📊 Download Excel
         </a>
     </form>
 </div>

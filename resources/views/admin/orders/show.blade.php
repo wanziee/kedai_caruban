@@ -58,12 +58,17 @@
                     <div class="space-y-4">
                         @foreach($order->orderItems as $item)
                             <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-                                <div class="flex-1">
-                                    <p class="font-semibold text-gray-800">{{ $item->menuItem->name }}</p>
-                                    <p class="text-sm text-gray-500">Rp {{ number_format($item->price, 0, ',', '.') }} x {{ $item->qty }}</p>
-                                    @if($item->notes)
-                                        <p class="text-sm text-gray-600 mt-1">Catatan: {{ $item->notes }}</p>
+                                <div class="flex items-center gap-4 flex-1">
+                                    @if($item->menuItem->image)
+                                        <img src="{{ asset('storage/' . $item->menuItem->image) }}" alt="{{ $item->menuItem->name }}" class="w-16 h-16 object-cover rounded-lg">
                                     @endif
+                                    <div>
+                                        <p class="font-semibold text-gray-800">{{ $item->menuItem->name }}</p>
+                                        <p class="text-sm text-gray-500">Rp {{ number_format($item->price, 0, ',', '.') }} x {{ $item->qty }}</p>
+                                        @if($item->notes)
+                                            <p class="text-sm text-gray-600 mt-1">Catatan: {{ $item->notes }}</p>
+                                        @endif
+                                    </div>
                                 </div>
                                 <div class="text-right">
                                     <p class="font-bold text-gray-800">Rp {{ number_format($item->subtotal, 0, ',', '.') }}</p>

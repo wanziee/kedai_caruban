@@ -249,7 +249,7 @@
                         <th>Tanggal</th>
                         <th>Total Item</th>
                         <th class="text-right">Total Harga</th>
-                        <th>Status</th>
+                        <th>Status Pembayaran</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -259,7 +259,7 @@
                             <td><?php echo e($order->created_at->format('d/m/Y H:i')); ?></td>
                             <td><?php echo e($order->orderItems->count()); ?> item</td>
                             <td class="text-right">Rp <?php echo e(number_format($order->total_price, 0, ',', '.')); ?></td>
-                            <td><?php echo e(ucfirst($order->order_status)); ?></td>
+                            <td><?php echo e(ucfirst($order->payment_status)); ?></td>
                         </tr>
                     <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
                 </tbody>

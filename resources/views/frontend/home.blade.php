@@ -209,11 +209,11 @@
 
                     @foreach ($menuItems as $item)
                         <div x-show="selectedCategory === 'all' || selectedCategory === '{{ strtolower($item->category->name) }}'"
-                            class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition flex flex-col">
+                            class="bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition flex flex-col @if(!$item->is_available) opacity-75 @endif">
 
                             @if ($item->image)
                                 <img src="{{ asset('storage/' . $item->image) }}" alt="{{ $item->name }}"
-                                    class="w-full h-48 object-cover">
+                                    class="w-full h-48 object-cover @if(!$item->is_available) grayscale @endif">
                             @else
                                 <div class="w-full h-48 bg-gray-200 flex items-center justify-center">
                                     <span class="text-gray-400">No Image</span>
@@ -234,35 +234,56 @@
                                     {{ $item->description }}
                                 </p>
 
-                                <!-- Desktop -->
-                                <div class="mt-auto pt-4 hidden md:block">
-                                    <button type="button"
-                                        @click="openModal({{ $item->id }}, '{{ $item->name }}', {{ $item->price }}, '{{ asset('storage/' . $item->image) }}')"
-                                        class="w-full bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-light transition">
-                                        + Add - Rp {{ number_format($item->price, 0, ',', '.') }}
-                                    </button>
-                                </div>
-
-                                <!-- Mobile -->
-                                <div class="mt-auto pt-4 md:hidden">
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-lg font-bold text-primary">
-                                            Rp {{ number_format($item->price, 0, ',', '.') }}
-                                        </span>
+                                @if($item->is_available)
+                                    <!-- Desktop -->
+                                    <div class="mt-auto pt-4 hidden md:block">
                                         <button type="button"
                                             @click="openModal({{ $item->id }}, '{{ $item->name }}', {{ $item->price }}, '{{ asset('storage/' . $item->image) }}')"
-                                            class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-light transition">
-                                            <svg width="15px" height="15px" viewBox="0 0 36 36"
-                                                xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
-                                                aria-hidden="true" role="img" class="iconify iconify--twemoji"
-                                                preserveAspectRatio="xMidYMid meet">
-                                                <path fill="white"
-                                                    d="M31 15H21V5a3 3 0 1 0-6 0v10H5a3 3 0 1 0 0 6h10v10a3 3 0 1 0 6 0V21h10a3 3 0 1 0 0-6z">
-                                                </path>
-                                            </svg>
+                                            class="w-full bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-light transition">
+                                            + Add - Rp {{ number_format($item->price, 0, ',', '.') }}
                                         </button>
                                     </div>
-                                </div>
+
+                                    <!-- Mobile -->
+                                    <div class="mt-auto pt-4 md:hidden">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-lg font-bold text-primary">
+                                                Rp {{ number_format($item->price, 0, ',', '.') }}
+                                            </span>
+                                            <button type="button"
+                                                @click="openModal({{ $item->id }}, '{{ $item->name }}', {{ $item->price }}, '{{ asset('storage/' . $item->image) }}')"
+                                                class="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-light transition">
+                                                <svg width="15px" height="15px" viewBox="0 0 36 36"
+                                                    xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+                                                    aria-hidden="true" role="img" class="iconify iconify--twemoji"
+                                                    preserveAspectRatio="xMidYMid meet">
+                                                    <path fill="white"
+                                                        d="M31 15H21V5a3 3 0 1 0-6 0v10H5a3 3 0 1 0 0 6h10v10a3 3 0 1 0 6 0V21h10a3 3 0 1 0 0-6z">
+                                                    </path>
+                                                </svg>
+                                            </button>
+                                        </div>
+                                    </div>
+                                @else
+                                    <!-- Not Available - Desktop -->
+                                    <div class="mt-auto pt-4 hidden md:block">
+                                        <div class="w-full bg-gray-300 text-gray-600 px-4 py-2 rounded-lg text-center font-semibold">
+                                            Menu Tidak Tersedia
+                                        </div>
+                                    </div>
+
+                                    <!-- Not Available - Mobile -->
+                                    <div class="mt-auto pt-4 md:hidden">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-lg font-bold text-gray-400 line-through">
+                                                Rp {{ number_format($item->price, 0, ',', '.') }}
+                                            </span>
+                                            <div class="bg-gray-300 text-gray-600 px-4 py-2 rounded-lg text-center font-semibold">
+                                                Tidak Tersedia
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endif
 
                             </div>
                         </div>

@@ -1,0 +1,1 @@
+{"version":2,"defects":{"Tests\\Feature\\ReportExportTest::test_admin_can_download_sales_report_excel":8,"Tests\\Feature\\AuthAccessTest::test_owner_role_can_access_admin_area":7},"times":{"Tests\\Feature\\ReportExportTest::test_admin_can_download_sales_report_excel":0.042,"Tests\\Feature\\AuthAccessTest::test_owner_role_can_access_admin_area":0.071}}

@@ -16,17 +16,17 @@ class MenuCategorySeeder extends Seeder
         $categories = [
             [
                 'name' => 'Makanan',
-                'image' => null,
+                'image' => 'categories/V35vwzZP049X2UXgCMLmmycWJAsgEYpanE1Qwc7d.png',
                 'description' => 'Berbagai pilihan makanan lezat dan mengenyangkan',
             ],
             [
                 'name' => 'Minuman',
-                'image' => null,
+                'image' => 'categories/Y0cC7m4VFWVmbuyriAEtmOprZ595DEGRCjjhSjNx.png',
                 'description' => 'Minuman segar dan menyegarkan',
             ],
             [
                 'name' => 'Snack',
-                'image' => null,
+                'image' => 'categories/yaU4hrVe3rV6P64P3AYIMPeP3aRNvjL0lOXojF9d.png',
                 'description' => 'Snack ringan dan gurih',
             ],
         ];

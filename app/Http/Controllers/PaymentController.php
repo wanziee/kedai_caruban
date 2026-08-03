@@ -49,7 +49,7 @@ class PaymentController extends Controller
 
                 // Detail transaksi
                 $transactionDetails = [
-                    'order_id' => $order->id,
+                    'order_id' => $order->order_code, // Use order_code for unique Midtrans order_id
                     'gross_amount' => $order->total_price,
                 ];
 
@@ -94,7 +94,7 @@ class PaymentController extends Controller
 
                 // Simpan snap token dan midtrans order id ke order
                 $order->payment_token = $snapToken;
-                $order->midtrans_order_id = $order->id; // Store the same order_id for Midtrans
+                $order->midtrans_order_id = $order->order_code; // Store order_code for Midtrans
                 $order->save();
 
                 Log::info('QRIS created', ['order_id' => $order->id, 'midtrans_order_id' => $order->midtrans_order_id]);
@@ -130,7 +130,7 @@ class PaymentController extends Controller
 
                 // Try to check status from Midtrans
                 try {
-                    $status = \Midtrans\Transaction::status($order->id);
+                    $status = \Midtrans\Transaction::status($order->order_code);
                     Log::info('Midtrans API response', ['status' => $status]);
 
                     $transactionStatus = is_array($status) ? ($status['transaction_status'] ?? null) : ($status->transaction_status ?? null);
@@ -292,7 +292,7 @@ class PaymentController extends Controller
         // Cek status dari Midtrans API
         try {
             /** @var mixed $status */
-            $status = \Midtrans\Transaction::status($order->id);
+            $status = \Midtrans\Transaction::status($order->order_code);
             /** @var string|null $transactionStatus */
             $transactionStatus = $status->transaction_status;
             /** @var string|null $fraudStatus */

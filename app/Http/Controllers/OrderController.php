@@ -29,11 +29,24 @@ class OrderController extends Controller
 
     public function updateStatus(Request $request, Order $order)
     {
+        \Log::info('updateStatus called', [
+            'order_id' => $order->id,
+            'current_status' => $order->order_status,
+            'request_data' => $request->all()
+        ]);
+
         $validated = $request->validate([
             'order_status' => 'required|in:pending,diproses,done,cancelled',
         ]);
 
+        \Log::info('Validation passed', ['validated' => $validated]);
+
         $order->update($validated);
+
+        \Log::info('Order updated', [
+            'order_id' => $order->id,
+            'new_status' => $order->order_status
+        ]);
 
         // Return JSON for AJAX requests
         if ($request->expectsJson()) {

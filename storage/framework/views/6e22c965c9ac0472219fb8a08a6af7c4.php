@@ -47,7 +47,7 @@
                 <div>
                     <label class="block text-gray-700 font-medium mb-2">Status</label>
                     <label class="flex items-center">
-                        <input type="checkbox" name="is_available" value="1" <?php echo e($menuItem->is_available ? 'checked' : ''); ?> class="mr-2">
+                        <input type="checkbox" name="is_available" <?php echo e($menuItem->is_available ? 'checked' : ''); ?> class="mr-2">
                         <span>Tersedia</span>
                     </label>
                 </div>

@@ -11,7 +11,7 @@ class FrontendController extends Controller
     public function home()
     {
         $categories = MenuCategory::all();
-        $menuItems = MenuItem::with('category')->where('is_available', true)->get();
+        $menuItems = MenuItem::with('category')->get();
         return view('frontend.home', compact('categories', 'menuItems'));
     }
 
